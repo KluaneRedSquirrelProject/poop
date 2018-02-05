@@ -23,8 +23,7 @@ trapping_dba <- "SELECT * FROM dbatrapping WHERE YEAR(date) >= 2008;" %>%
 # 2008: trappings comments column, no pv
 pt_rgx <- "(?<=p[0-9]{4}[-;,:]?\\s{0,2})[0-2]?[0-9](h|:)?[0-9]{2}\\s?(am|pm)?"
 poop_2008 <- trapping %>% 
-  filter(year(date) == 2008,
-         comments != "") %>% 
+  filter(year(date) == 2008, comments != "") %>% 
   mutate(pv = str_extract(str_to_lower(comments), "p[0-9]{4}"),
          pv_second = str_extract(str_to_lower(comments), "p[0-9]{4}")) %>% 
   filter(!is.na(pv)) %>% 
@@ -59,6 +58,4 @@ poop_2014_7 <- trapping %>%
          year = year(date)) %>% 
   select(squirrel_id, trapping_id, year, vial_number, poop_id, poop_time, 
          comments)
-
 poop <- bind_rows(poop_2008, poop_2012, poop_2014_7)
-write_csv(poop, "output/poop.csv")
