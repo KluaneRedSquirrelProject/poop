@@ -225,7 +225,7 @@ matches <- multiples %>%
   bind_rows(matches, .)
 # prepare the poop table records
 poop_2009 <- matches %>% 
-  mutate(year = 2009, vial_number = 1) %>% 
+  mutate(year = year(date), vial_number = 1) %>% 
   select(squirrel_id, trapping_id, year, vial_number, poop_id, poop_time, 
          comments)
 
@@ -249,10 +249,18 @@ poop <- poop %>%
   select(-vial_number) %>% 
   unnest() %>% 
   select(one_of(poop %>% names)) %>% 
-  bind_rows(poop %>% filter(!str_detect(poop_id, ",")), .)
+  bind_rows(poop %>% filter(!str_detect(poop_id, ",")), .) %>% 
+  mutate(squirrel_id = as.integer(squirrel_id),
+         trapping_id = as.integer(trapping_id),
+         vial_number = as.integer(vial_number),
+         poop_time = as.integer(poop_time))
 write_csv(poop, "output/poop_external.csv")
 
 # combine db and external
-write_csv(poop, "output/poop_db.csv") %>% 
+read_csv("output/poop_db.csv") %>% 
   bind_rows(poop) %>% 
+  mutate(squirrel_id = as.integer(squirrel_id),
+         trapping_id = as.integer(trapping_id),
+         vial_number = as.integer(vial_number),
+         poop_time = as.integer(poop_time)) %>% 
   write_csv("output/poop.csv")

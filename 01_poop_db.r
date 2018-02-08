@@ -58,4 +58,9 @@ poop_2014_7 <- trapping %>%
          year = year(date)) %>% 
   select(squirrel_id, trapping_id, year, vial_number, poop_id, poop_time, 
          comments)
-poop <- bind_rows(poop_2008, poop_2012, poop_2014_7)
+poop <- bind_rows(poop_2008, poop_2012, poop_2014_7) %>% 
+  mutate(squirrel_id = as.integer(squirrel_id),
+         trapping_id = as.integer(trapping_id),
+         vial_number = as.integer(vial_number),
+         poop_time = as.integer(poop_time))
+write_csv(poop, "output/poop_db.csv", na = "")
