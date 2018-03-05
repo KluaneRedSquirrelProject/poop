@@ -48,7 +48,7 @@ poop_2012 <- trapping_dba %>%
 # 2014-17: trappings comments column
 poop_2014_7 <- trapping %>% 
   filter(year(date) %in% 2014:2017,
-         str_detect(comments, "(p|P)(v|V)")) %>% 
+         str_detect(comments, "((p|P)(v|V))|(Poop H)")) %>% 
   mutate(pv = extract_pv(comments),
          pv_second = extract_pv(comments, first = FALSE),
          poop_time = extract_pt(comments)) %>% 
