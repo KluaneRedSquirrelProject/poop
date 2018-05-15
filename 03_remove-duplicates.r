@@ -6,7 +6,7 @@ poop$row_id <- seq.int(nrow(poop))
 # first identify problems
 problems <- group_by(poop, poop_id) %>% 
   filter(n() > 1, n_distinct(year) > 1 | 
-           n_distinct(squirrel_id) > 1 | 
+           #n_distinct(squirrel_id) > 1 | 
            n_distinct(comments) > 1) %>% 
   ungroup() %>% 
   arrange(poop_id) %>% 

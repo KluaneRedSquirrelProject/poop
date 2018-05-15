@@ -25,7 +25,9 @@ pt_rgx <- "(?<=p[0-9]{4}[-;,:]?\\s{0,2})[0-2]?[0-9](h|:)?[0-9]{2}\\s?(am|pm)?"
 poop_2008 <- trapping %>% 
   filter(year(date) == 2008, comments != "") %>% 
   mutate(pv = str_extract(str_to_lower(comments), "p[0-9]{4}"),
-         pv_second = str_extract(str_to_lower(comments), "p[0-9]{4}")) %>% 
+         pv_second = str_extract_all(str_to_lower(comments), "p[0-9]{4}"),
+         pv_second = map_chr(pv_second, 
+                             ~ ifelse(length(.x) > 1, .x[2], NA))) %>%
   filter(!is.na(pv)) %>% 
   mutate(poop_time = str_extract(str_to_lower(comments), pt_rgx)) %>% 
   gather(vial_number, poop_id, pv, pv_second) %>% 
