@@ -108,7 +108,7 @@ matches %>%
 # all dupes have "handled" or "hndld" in comments, remove
 matches <- matches %>% 
   group_by(id) %>% 
-  filter(n() ==1 | !str_detect(comments, "handled|hndld")) %>% 
+  filter(n() == 1 | !str_detect(comments, "handled|hndld")) %>% 
   ungroup()
 stopifnot(matches %>% 
             group_by(id) %>% 
